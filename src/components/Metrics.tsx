@@ -16,7 +16,7 @@ const TICKER_ITEMS = [
 
 export function Metrics() {
   return (
-    <section id="metrics" className="relative border-t border-edge/60">
+    <section id="metrics" className="reveal relative border-t border-edge/60">
       <div className="overflow-hidden border-b border-edge/60 bg-panel/40 py-3" aria-hidden="true">
         <div className="flex w-max animate-ticker gap-0">
           {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (

@@ -49,9 +49,9 @@ const FEATURES = [
 
 export function Platform() {
   return (
-    <section id="platform" className="relative border-t border-edge/60 py-28">
+    <section id="platform" className="reveal relative border-t border-edge/60 py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div className="reveal mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="font-mono text-xs tracking-widest text-volt">/ THE PLATFORM</p>
             <h2 className="mt-3 max-w-xl text-4xl font-bold tracking-tight sm:text-5xl">
@@ -66,7 +66,7 @@ export function Platform() {
           {FEATURES.map((f) => (
             <article
               key={f.id}
-              className="group relative bg-carbon p-8 transition-colors duration-300 ease-snap hover:bg-panel"
+              className="reveal group relative bg-carbon p-8 transition-colors duration-300 ease-snap hover:bg-panel"
             >
               <span className="absolute right-6 top-6 font-mono text-xs text-smoke/50">{f.id}</span>
               <div className="mb-8">{f.icon}</div>

@@ -5,7 +5,7 @@ export function Access() {
   const [state, setState] = useState<"idle" | "done">("idle");
 
   return (
-    <section id="access" className="relative overflow-hidden border-t border-edge/60 py-28">
+      <section id="access" className="reveal relative overflow-hidden border-t border-edge/60 py-28">
       <div className="grid-bg absolute inset-0 opacity-60" aria-hidden="true" />
       <div className="relative mx-auto max-w-3xl px-6 text-center">
         <p className="font-mono text-xs tracking-widest text-volt">/ REQUEST ACCESS</p>
@@ -65,7 +65,7 @@ export function Footer() {
           <li><a href="#metrics" className="transition-colors duration-300 ease-snap hover:text-volt">METRICS</a></li>
           <li><a href="#access" className="transition-colors duration-300 ease-snap hover:text-volt">ACCESS</a></li>
         </ul>
-        <p className="font-mono text-[11px] text-smoke/60">© 2026 TECHCORE SYSTEMS — ALL CYCLES RESERVED</p>
+        <p className="font-mono text-[11px] text-smoke">© 2026 TECHCORE SYSTEMS — ALL CYCLES RESERVED</p>
       </div>
     </footer>
   );

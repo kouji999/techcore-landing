@@ -7,6 +7,9 @@ function TechCoreModel() {
   const { scene, animations } = useGLTF("/techcore.glb", "/draco/");
   const root = useRef<THREE.Group>(null);
   const mixer = useRef<THREE.AnimationMixer | null>(null);
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ACES desaturates strong emissives toward cream — pull intensity back so lime reads lime
   scene.traverse((obj) => {
@@ -17,12 +20,14 @@ function TechCoreModel() {
     }
   });
 
-  if (!mixer.current && animations.length > 0) {
+  // reduced motion: freeze at initial pose, no autoplay, no float
+  if (!reducedMotion && !mixer.current && animations.length > 0) {
     mixer.current = new THREE.AnimationMixer(scene);
     animations.forEach((clip) => mixer.current!.clipAction(clip).play());
   }
 
   useFrame((_, delta) => {
+    if (reducedMotion) return;
     mixer.current?.update(delta);
     if (root.current) {
       // gentle float

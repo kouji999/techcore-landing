@@ -6,6 +6,36 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid #b8ff2e;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.35s cubic-bezier(0.33, 1, 0.68, 1),
+      transform 0.35s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 body {
   @apply bg-void text-bone font-display antialiased;
 }
@@ -43,4 +73,11 @@ body {
 
 .animate-pulse-dot {
   animation: pulse-dot 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ticker,
+  .animate-pulse-dot {
+    animation: none;
+  }
 }
