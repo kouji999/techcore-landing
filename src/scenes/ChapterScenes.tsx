@@ -130,15 +130,15 @@ function Prop({
   );
 }
 
-// ---------- PLATFORM: worn server rack, right column ----------
+// ---------- PLATFORM: nodesphere network (web3), right column ----------
 export function LatticeScene() {
   return (
     <ChapterCanvas
-      camera={{ position: [1.5, 0.8, 2.7], fov: 38, lookAt: [0, 0, 0] }}
-      className="inset-y-0 right-0 w-full opacity-60 lg:w-[42%] lg:opacity-100"
+      camera={{ position: [0, 1.2, 4.8], fov: 40, lookAt: [0, 0, 0] }}
+      className="inset-y-0 right-0 w-full opacity-60 lg:w-[46%] lg:opacity-100"
     >
       <Lights />
-      <Prop url="/models/worn_metal_rack/worn_metal_rack.gltf" position={[0, -0.1, 0]} fit={1.9} rotation={[0, -0.45, 0]} spinAxis="y" spinSpeed={0.08} />
+      <Prop url="/props/nodesphere.glb" position={[0, -0.1, 0]} fit={2.6} spinAxis="y" spinSpeed={0.05} />
     </ChapterCanvas>
   );
 }
@@ -156,15 +156,15 @@ export function WaveGridScene() {
   );
 }
 
-// ---------- ACCESS: power junction behind the statement ----------
+// ---------- ACCESS: ringgate behind the statement ----------
 export function PortalScene() {
   return (
     <ChapterCanvas
-      camera={{ position: [0, 0.7, 3.8], fov: 40, lookAt: [0, 0, 0] }}
+      camera={{ position: [0, 0.5, 6.0], fov: 42, lookAt: [0, 0.1, 0] }}
       className="inset-0 opacity-70"
     >
       <Lights />
-      <Prop url="/models/power_box_01/power_box_01.gltf" position={[2.0, -0.55, -0.6]} fit={1.7} rotation={[0, 0.65, 0]} spinAxis="y" spinSpeed={0.06} />
+      <Prop url="/props/ringgate.glb" position={[1.7, -0.35, -0.3]} fit={2.3} rotation={[1.15, 0.35, 0]} spinAxis="y" spinSpeed={0.06} />
     </ChapterCanvas>
   );
 }

@@ -7,36 +7,16 @@ import * as THREE from "three";
 // Camera art-directed static + gentle spin. No scroll scrub.
 
 function HeroModel() {
-  const { scene } = useGLTF("/models/circuit_board/circuit_board.gltf");
-  const board = useRef<THREE.Group>(null);
-  const inner = useRef<THREE.Group>(null);
+  const { scene, animations } = useGLTF("/techcore.glb", "/draco/");
+  const mixer = useRef<THREE.AnimationMixer | null>(null);
 
-  useEffect(() => {
-    // normalize real-world scale to ~3 units wide
-    const g = inner.current;
-    if (!g) return;
-    const box = new THREE.Box3().setFromObject(scene);
-    const size = box.getSize(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const s = 3 / maxDim;
-    g.scale.setScalar(s);
-    const center = box.getCenter(new THREE.Vector3()).multiplyScalar(s);
-    g.position.set(-center.x, -center.y, -center.z);
-  }, [scene]);
+  if (!mixer.current && animations.length > 0) {
+    mixer.current = new THREE.AnimationMixer(scene);
+    animations.forEach((clip) => mixer.current!.clipAction(clip).play());
+  }
+  useFrame((_, delta) => mixer.current?.update(delta));
 
-  useFrame((_, dt) => {
-    if (board.current && !reducedRef.current) {
-      board.current.rotation.y += dt * 0.16;
-    }
-  });
-
-  return (
-    <group ref={board} rotation={[-0.4, 0, 0]} position={[0, -0.25, 0]}>
-      <group ref={inner}>
-        <primitive object={scene} />
-      </group>
-    </group>
-  );
+  return <primitive object={scene} />;
 }
 
 const reducedRef = { current: typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches };
