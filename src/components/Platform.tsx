@@ -62,7 +62,7 @@ export function Platform() {
             FOUR SUBSYSTEMS, ONE CONTROL PLANE. EVERYTHING BELOW THE API IS OUR PROBLEM, NOT YOURS.
           </p>
         </div>
-        <div className="grid gap-px bg-edge/60 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="reveal reveal-stagger grid gap-px bg-edge/60 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((f) => (
             <article
               key={f.id}

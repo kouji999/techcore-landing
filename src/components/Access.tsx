@@ -8,6 +8,8 @@ export function Access() {
       <section id="access" className="reveal relative overflow-hidden border-t border-edge/60 py-28">
       <div className="grid-bg absolute inset-0 opacity-60" aria-hidden="true" />
       <div className="relative mx-auto max-w-3xl px-6 text-center">
+        <div className="hud-corner relative border border-edge bg-panel/60 px-8 py-12 sm:px-14 sm:py-16">
+          <span className="scanline" aria-hidden="true" />
         <p className="font-mono text-xs tracking-widest text-volt">/ REQUEST ACCESS</p>
         <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
           The grid has capacity<span className="text-volt">.</span>
@@ -42,6 +44,7 @@ export function Access() {
         <p aria-live="polite" className="mt-4 h-4 font-mono text-[11px] tracking-wider text-volt">
           {state === "done" ? "PARTITION REQUEST LOGGED — WATCH YOUR INBOX" : ""}
         </p>
+        </div>
       </div>
     </section>
   );

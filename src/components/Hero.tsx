@@ -35,7 +35,7 @@ export function Hero() {
               READ SPEC
             </a>
           </div>
-          <dl className="mt-12 flex gap-10 font-mono">
+          <dl className="reveal reveal-stagger mt-12 flex gap-10 font-mono">
             <div>
               <dt className="text-[11px] tracking-widest text-smoke">P99 LATENCY</dt>
               <dd className="mt-1 text-2xl font-semibold text-bone">11<span className="text-volt">ms</span></dd>

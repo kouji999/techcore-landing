@@ -27,7 +27,7 @@ export function Metrics() {
           ))}
         </div>
       </div>
-      <div className="mx-auto grid max-w-7xl grid-cols-2 px-6 lg:grid-cols-4">
+      <div className="reveal reveal-stagger mx-auto grid max-w-7xl grid-cols-2 px-6 lg:grid-cols-4">
         {STATS.map((s) => (
           <div key={s.label} className="border-b border-edge/60 px-2 py-14 text-center lg:border-b-0 lg:px-8 lg:text-left">
             <p className="font-mono text-5xl font-semibold tracking-tight text-bone lg:text-6xl">
