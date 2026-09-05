@@ -49,7 +49,7 @@ export default function HeroCanvas() {
   return (
     <Canvas
       dpr={[1, 1.5]}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      gl={{ antialias: true, alpha: true }}
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       camera={{ position: [2.2, 1.4, 4.6], fov: 42 }}
     >

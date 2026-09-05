@@ -162,6 +162,64 @@ body {
   to { transform: translate3d(96px, 96px, 0); }
 }
 
+/* ---- particle field: CSS-only drifting motes (no GPU-bound WebGL) ---- */
+.bg-motes {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bg-motes span {
+    position: absolute;
+    border-radius: 9999px;
+    background: rgb(184 255 46 / 0.5);
+    animation: mote-rise linear infinite;
+  }
+  .bg-motes span:nth-child(5n + 1) { background: rgb(203 213 225 / 0.35); }
+  .bg-motes span:nth-child(5n + 2) { animation-duration: 22s; animation-delay: -6s; }
+  .bg-motes span:nth-child(5n + 3) { animation-duration: 30s; animation-delay: -14s; }
+  .bg-motes span:nth-child(5n + 4) { animation-duration: 26s; animation-delay: -10s; }
+}
+
+@keyframes mote-rise {
+  0% { transform: translate3d(0, 105vh, 0); opacity: 0; }
+  8% { opacity: var(--mote-o, 0.6); }
+  85% { opacity: var(--mote-o, 0.6); }
+  100% { transform: translate3d(var(--mote-x, 20px), -8vh, 0); opacity: 0; }
+}
+
+/* ---- scanline sweep across whole viewport ---- */
+.bg-scan {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(184 255 46 / 0.018) 47%,
+    rgb(184 255 46 / 0.05) 50%,
+    rgb(184 255 46 / 0.018) 53%,
+    transparent 100%
+  );
+  background-size: 100% 260%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bg-scan {
+    animation: scan-sweep 9s ease-in-out infinite;
+  }
+}
+
+@keyframes scan-sweep {
+  0% { background-position: 0 -130%; }
+  50% { background-position: 0 130%; }
+  100% { background-position: 0 -130%; }
+}
+
 .text-outline {
   -webkit-text-stroke: 1px rgb(184 255 46 / 0.35);
   color: transparent;

@@ -1,12 +1,24 @@
+import { lazy, Suspense } from "react";
 import { Nav } from "./components/Nav";
 import HeroCanvas from "./components/HeroCanvas";
 import { Hero } from "./components/Hero";
 import { Platform } from "./components/Platform";
 import { Metrics } from "./components/Metrics";
 import { Access, Footer } from "./components/Access";
+import { BgMotes } from "./components/BgMotes";
 import { useSectionReveals } from "./components/ScrollController";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
-import { LatticeScene, WaveGridScene, PortalScene } from "./scenes/ChapterScenes";
+
+// 3D chapter scenes are code-split: hero loads first, chapters stream in after
+const LatticeScene = lazy(() =>
+  import("./scenes/ChapterScenes").then((m) => ({ default: m.LatticeScene })),
+);
+const WaveGridScene = lazy(() =>
+  import("./scenes/ChapterScenes").then((m) => ({ default: m.WaveGridScene })),
+);
+const PortalScene = lazy(() =>
+  import("./scenes/ChapterScenes").then((m) => ({ default: m.PortalScene })),
+);
 
 export default function App() {
   useSmoothScroll();
@@ -15,6 +27,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-void">
       <div className="bg-drift" aria-hidden="true" />
+      <BgMotes />
+      <div className="bg-scan" aria-hidden="true" />
 
       <Nav />
 
@@ -24,21 +38,27 @@ export default function App() {
           <HeroCanvas />
         </Hero>
 
-        {/* PLATFORM — lattice lives inside its own chapter */}
+        {/* PLATFORM — nodesphere network */}
         <div className="relative">
-          <LatticeScene />
+          <Suspense fallback={null}>
+            <LatticeScene />
+          </Suspense>
           <Platform />
         </div>
 
         {/* METRICS — wave grid horizon */}
         <div className="relative">
-          <WaveGridScene />
+          <Suspense fallback={null}>
+            <WaveGridScene />
+          </Suspense>
           <Metrics />
         </div>
 
-        {/* ACCESS — portal gate */}
+        {/* ACCESS — ringgate portal */}
         <div className="relative">
-          <PortalScene />
+          <Suspense fallback={null}>
+            <PortalScene />
+          </Suspense>
           <Access />
         </div>
       </main>

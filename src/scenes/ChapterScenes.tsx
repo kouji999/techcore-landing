@@ -3,7 +3,10 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 
-// Render only while on screen — offscreen canvases cost nothing
+// Render only while on screen — offscreen canvases cost nothing.
+// Canvas mounts on FIRST intersection (models + GL context deferred until needed),
+// then only the frameloop toggles. Chapter canvases skip AA + high DPR + discrete
+// GPU preference: they are dimmed backgrounds, invisible quality loss, big win.
 export function ChapterCanvas({
   children,
   camera,
@@ -16,31 +19,39 @@ export function ChapterCanvas({
   opacityClass?: string;
 }) {
   const holder = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
     const el = holder.current;
     if (!el) return;
-    const io = new IntersectionObserver((entries) => setActive(entries.some((e) => e.isIntersecting)), {
-      rootMargin: "10% 0px",
-    });
+    const io = new IntersectionObserver(
+      (entries) => {
+        const any = entries.some((e) => e.isIntersecting);
+        setActive(any);
+        if (any) setMounted(true); // mount once, never unmount (remount = context re-create jank)
+      },
+      { rootMargin: "15% 0px" },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
   return (
     <div ref={holder} className={`pointer-events-none absolute ${className}`} aria-hidden="true">
-      <div className={`h-full w-full ${opacityClass}`}>
-        <Canvas
-          frameloop={active ? "always" : "never"}
-          dpr={[1, 1.5]}
-          gl={{ antialias: true, alpha: true }}
-          onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
-        >
-          <SceneCamera {...camera} />
-          <Suspense fallback={null}>{children}</Suspense>
-        </Canvas>
-      </div>
+      {mounted && (
+        <div className={`h-full w-full ${opacityClass}`}>
+          <Canvas
+            frameloop={active ? "always" : "never"}
+            dpr={[1, 1.25]}
+            gl={{ antialias: false, alpha: true }}
+            onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
+          >
+            <SceneCamera {...camera} />
+            <Suspense fallback={null}>{children}</Suspense>
+          </Canvas>
+        </div>
+      )}
     </div>
   );
 }
