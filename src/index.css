@@ -34,6 +34,73 @@ button {
     opacity: 1;
     transform: none;
   }
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.32s cubic-bezier(0.33, 1, 0.68, 1),
+      transform 0.32s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  .reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+  .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 60ms; }
+  .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 120ms; }
+  .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 180ms; }
+  .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 240ms; }
+  .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 300ms; }
+  .reveal-stagger.is-visible > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hud-corner {
+  position: relative;
+}
+.hud-corner::before,
+.hud-corner::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgb(184 255 46 / 0.55);
+  pointer-events: none;
+}
+.hud-corner::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+.hud-corner::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+.scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(184 255 46 / 0.03) 48%,
+    rgb(184 255 46 / 0.07) 50%,
+    transparent 52%
+  );
+  background-size: 100% 200%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scanline {
+    animation: scan 7s linear infinite;
+  }
+}
+
+@keyframes scan {
+  from { background-position: 0 -100%; }
+  to { background-position: 0 100%; }
 }
 
 body {
