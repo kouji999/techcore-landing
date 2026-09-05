@@ -1,11 +1,11 @@
-import { useState } from "react";
+﻿import { useState } from"react";
 
 export function Access() {
   const [email, setEmail] = useState("");
-  const [state, setState] = useState<"idle" | "done">("idle");
+  const [state, setState] = useState<"idle" |"done">("idle");
 
   return (
-      <section id="access" className="reveal relative overflow-hidden border-t border-edge/60 py-28">
+      <section id="access" data-chapter className="relative overflow-hidden border-t border-edge/60 py-28">
       <div className="grid-bg absolute inset-0 opacity-60" aria-hidden="true" />
       <div className="relative mx-auto max-w-3xl px-6 text-center">
         <div className="hud-corner relative border border-edge bg-panel/60 px-8 py-12 sm:px-14 sm:py-16">
@@ -38,11 +38,11 @@ export function Access() {
             type="submit"
             className="bg-volt px-7 py-3 font-mono text-sm font-semibold tracking-wider text-void transition-transform duration-300 ease-snap hover:translate-y-[-2px]"
           >
-            {state === "done" ? "✓ QUEUED" : "JOIN GRID →"}
+            {state ==="done" ?"âœ“ QUEUED" :"JOIN GRID â†’"}
           </button>
         </form>
         <p aria-live="polite" className="mt-4 h-4 font-mono text-[11px] tracking-wider text-volt">
-          {state === "done" ? "PARTITION REQUEST LOGGED — WATCH YOUR INBOX" : ""}
+          {state ==="done" ?"PARTITION REQUEST LOGGED â€” WATCH YOUR INBOX" :""}
         </p>
         </div>
       </div>
@@ -68,7 +68,7 @@ export function Footer() {
           <li><a href="#metrics" className="transition-colors duration-300 ease-snap hover:text-volt">METRICS</a></li>
           <li><a href="#access" className="transition-colors duration-300 ease-snap hover:text-volt">ACCESS</a></li>
         </ul>
-        <p className="font-mono text-[11px] text-smoke">© 2026 TECHCORE SYSTEMS — ALL CYCLES RESERVED</p>
+        <p className="font-mono text-[11px] text-smoke">Â© 2026 TECHCORE SYSTEMS â€” ALL CYCLES RESERVED</p>
       </div>
     </footer>
   );

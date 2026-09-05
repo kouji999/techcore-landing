@@ -1,8 +1,8 @@
-const FEATURES = [
+﻿const FEATURES = [
   {
-    id: "01",
-    title: "Bare-metal GPU Mesh",
-    body: "Direct access to H-class accelerators without virtualization tax. Metal-to-metal NVLink, 800G fabric, zero noisy neighbors.",
+    id:"01",
+    title:"Bare-metal GPU Mesh",
+    body:"Direct access to H-class accelerators without virtualization tax. Metal-to-metal NVLink, 800G fabric, zero noisy neighbors.",
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <rect x="2" y="4" width="16" height="12" stroke="#B8FF2E" strokeWidth="1.4" />
@@ -11,9 +11,9 @@ const FEATURES = [
     ),
   },
   {
-    id: "02",
-    title: "Edge Inference Grid",
-    body: "Models replicated to 14 regions with anycast routing. First token in under 12ms from 94% of the inhabited planet.",
+    id:"02",
+    title:"Edge Inference Grid",
+    body:"Models replicated to 14 regions with anycast routing. First token in under 12ms from 94% of the inhabited planet.",
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <circle cx="10" cy="10" r="2.5" fill="#B8FF2E" />
@@ -23,9 +23,9 @@ const FEATURES = [
     ),
   },
   {
-    id: "03",
-    title: "Zero-Config Orchestration",
-    body: "Declare desired state in 12 lines of TOML. Rollbacks, canaries, and autoscale handled by the grid controller, not your pager.",
+    id:"03",
+    title:"Zero-Config Orchestration",
+    body:"Declare desired state in 12 lines of TOML. Rollbacks, canaries, and autoscale handled by the grid controller, not your pager.",
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <path d="M10 2l7 4v8l-7 4-7-4V6l7-4z" stroke="#B8FF2E" strokeWidth="1.4" />
@@ -34,9 +34,9 @@ const FEATURES = [
     ),
   },
   {
-    id: "04",
-    title: "Confidential Compute",
-    body: "Memory encryption and attested boot on every node. Your weights never exist in plaintext outside your enclave.",
+    id:"04",
+    title:"Confidential Compute",
+    body:"Memory encryption and attested boot on every node. Your weights never exist in plaintext outside your enclave.",
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <rect x="4" y="9" width="12" height="8" stroke="#B8FF2E" strokeWidth="1.4" />
@@ -49,9 +49,9 @@ const FEATURES = [
 
 export function Platform() {
   return (
-    <section id="platform" className="reveal relative border-t border-edge/60 py-28">
+    <section id="platform" data-chapter className="relative border-t border-edge/60 py-28">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="reveal mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="font-mono text-xs tracking-widest text-volt">/ THE PLATFORM</p>
             <h2 className="mt-3 max-w-xl text-4xl font-bold tracking-tight sm:text-5xl">
@@ -62,11 +62,11 @@ export function Platform() {
             FOUR SUBSYSTEMS, ONE CONTROL PLANE. EVERYTHING BELOW THE API IS OUR PROBLEM, NOT YOURS.
           </p>
         </div>
-        <div className="reveal reveal-stagger grid gap-px bg-edge/60 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-px bg-edge/60 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((f) => (
             <article
               key={f.id}
-              className="reveal group relative bg-carbon p-8 transition-colors duration-300 ease-snap hover:bg-panel"
+              className="group relative bg-carbon p-8 transition-colors duration-300 ease-snap hover:bg-panel"
             >
               <span className="absolute right-6 top-6 font-mono text-xs text-smoke/50">{f.id}</span>
               <div className="mb-8">{f.icon}</div>

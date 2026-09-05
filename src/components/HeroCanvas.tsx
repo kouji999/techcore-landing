@@ -1,41 +1,50 @@
-import { Suspense, useEffect, useRef, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useGLTF, OrbitControls } from "@react-three/drei";
-import * as THREE from "three";
+﻿import { Suspense, useRef } from"react";
+import { Canvas, useFrame, useThree } from"@react-three/fiber";
+import { useGLTF, OrbitControls, PerspectiveCamera } from"@react-three/drei";
+import * as THREE from"three";
+import { rig } from"../state/rig";
 
-// Pull camera back on narrow/portrait viewports so the orbit rings never clip
-function CameraRig() {
-  const { camera, size } = useThree();
-  useEffect(() => {
+const POS_LAMBDA = 3;
+const LOOK_LAMBDA = 3;
+
+// Scroll-driven camera: damps toward rig targets every frame.
+// Double smoothing (scrub 1 + damp) = fluid camera even on scroll flings.
+function CameraRig({ orbitMode }: { orbitMode: boolean }) {
+  const camRef = useRef<THREE.PerspectiveCamera>(null);
+  const target = useRef(new THREE.Vector3(0, 0, 0));
+  const { size } = useThree();
+
+  useFrame((_, dt) => {
+    const c = camRef.current;
+    if (!c) return;
+    const r = rig.cam;
+
+    if (orbitMode) {
+      c.lookAt(0, 0, 0);
+      return;
+    }
+
+    // portrait/narrow viewports: scale out so rings never clip
     const aspect = size.width / size.height;
-    const dist = aspect < 0.75 ? 7.2 : aspect < 1.1 ? 5.8 : 4.6;
-    const k = dist / 4.6;
-    camera.position.set(3.2 * k, 1.6 * k, dist);
-    camera.lookAt(0, 0, 0);
-    camera.updateProjectionMatrix();
-  }, [camera, size]);
-  return null;
-}
+    const zScale = aspect < 0.75 ? 1.56 : aspect < 1.1 ? 1.26 : 1;
 
-// OrbitControls sets touch-action:none — restore vertical page scroll on touch,
-// horizontal swipes still orbit (pan-y lets the browser own the vertical axis)
-function TouchFix() {
-  const { gl } = useThree();
-  useEffect(() => {
-    gl.domElement.style.touchAction = "pan-y";
-  }, [gl]);
-  return null;
+    const d = THREE.MathUtils.damp;
+    c.position.x = d(c.position.x, r.px, POS_LAMBDA, dt);
+    c.position.y = d(c.position.y, r.py, POS_LAMBDA, dt);
+    c.position.z = d(c.position.z, r.pz * zScale, POS_LAMBDA, dt);
+    target.current.x = d(target.current.x, r.lx, LOOK_LAMBDA, dt);
+    target.current.y = d(target.current.y, r.ly, LOOK_LAMBDA, dt);
+    target.current.z = d(target.current.z, r.lz, LOOK_LAMBDA, dt);
+    c.lookAt(target.current);
+  });
+
+  return <PerspectiveCamera ref={camRef} makeDefault fov={42} position={[3.2, 1.6, 4.6]} />;
 }
 
 function TechCoreModel() {
-  const { scene, animations } = useGLTF("/techcore.glb", "/draco/");
-  const root = useRef<THREE.Group>(null);
+  const { scene, animations } = useGLTF("/techcore.glb","/draco/");
   const mixer = useRef<THREE.AnimationMixer | null>(null);
-  const reducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ACES desaturates strong emissives toward cream — pull intensity back so lime reads lime
   scene.traverse((obj) => {
     const mesh = obj as THREE.Mesh;
     if (mesh.isMesh) {
@@ -44,73 +53,35 @@ function TechCoreModel() {
     }
   });
 
-  // reduced motion: freeze at initial pose, no autoplay, no float
-  if (!reducedMotion && !mixer.current && animations.length > 0) {
+  if (!mixer.current && animations.length > 0) {
     mixer.current = new THREE.AnimationMixer(scene);
     animations.forEach((clip) => mixer.current!.clipAction(clip).play());
   }
 
   useFrame((_, delta) => {
-    if (reducedMotion) return;
     mixer.current?.update(delta);
-    if (root.current) {
-      // gentle float
-      root.current.position.y = Math.sin(Date.now() / 1600) * 0.12;
-    }
   });
 
-  return (
-    <group ref={root}>
-      <primitive object={scene} />
-    </group>
-  );
+  return <primitive object={scene} />;
 }
 
-export default function HeroCanvas() {
-  const [failed, setFailed] = useState(false);
-
-  if (failed) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <div className="font-mono text-xs text-smoke">[ 3D module unavailable ]</div>
-      </div>
-    );
-  }
-
+export default function HeroCanvas({ reducedMotion }: { reducedMotion: boolean }) {
   return (
-    <div
-      className="h-full w-full cursor-grab active:cursor-grabbing"
-      onPointerDown={() => {
-        // drag hint disappears on first interaction
-        const hint = document.getElementById("drag-hint");
-        if (hint) hint.style.opacity = "0";
-      }}
+    <Canvas
+      dpr={[1, 1.5]}
+      gl={{ antialias: true, alpha: true, powerPreference:"high-performance" }}
+      onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
     >
-      <Canvas
-        camera={{ position: [3.2, 1.6, 4.6], fov: 42 }}
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        onCreated={({ gl }) => {
-          gl.setClearColor(0x000000, 0);
-        }}
-        onError={() => setFailed(true)}
-      >
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.25} />
-          <directionalLight position={[4, 6, 3]} intensity={1.4} color="#cfe0ff" />
-          <directionalLight position={[-5, -2, -3]} intensity={0.5} color="#B8FF2E" />
-          <TechCoreModel />
-          <CameraRig />
-          <TouchFix />
-          <OrbitControls
-            enableZoom={false}
-            enablePan={false}
-            enableDamping
-            dampingFactor={0.08}
-            rotateSpeed={0.7}
-          />
-        </Suspense>
-      </Canvas>
-    </div>
+      <Suspense fallback={null}>
+        <ambientLight intensity={0.25} />
+        <directionalLight position={[4, 6, 3]} intensity={1.4} color="#cfe0ff" />
+        <directionalLight position={[-5, -2, -3]} intensity={0.5} color="#B8FF2E" />
+        <TechCoreModel />
+        <CameraRig orbitMode={reducedMotion} />
+        {reducedMotion && (
+          <OrbitControls enableZoom={false} enablePan={false} enableDamping dampingFactor={0.08} rotateSpeed={0.7} />
+        )}
+      </Suspense>
+    </Canvas>
   );
 }
