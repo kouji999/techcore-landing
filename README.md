@@ -1,32 +1,47 @@
-# React + TypeScript + Vite
+# TechCore Landing
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+TechCore — 3D dark-themed technology landing page with an interactive Blender-built hero, built with React, TypeScript, and React Three Fiber.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Interactive 3D hero** — TechCore gyroscope model (icosphere core, orbital rings, satellite nodes) modeled and animated in Blender via MCP, exported as compressed Draco GLB (~97KB)
+- **Seamless animation loop** — all rotations are clean 2π multiples with linear interpolation; loop boundary is mathematically invisible (frame 0 ≡ frame 120)
+- **Responsive 3D** — aspect-aware camera rig keeps the model fully visible from mobile portrait to ultrawide; touch scroll passthrough (`touch-action: pan-y`) so vertical swipes scroll the page while horizontal swipes orbit
+- **Accessibility** — `prefers-reduced-motion` respected (CSS animations + 3D autoplay freeze), `:focus-visible` outlines, AA contrast, aria-live form feedback, keyboard navigation
+- **HUD design language** — corner brackets, scanline accent, staggered scroll reveals, monospace telemetry ticker
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Vite + React 18 + TypeScript
+- Tailwind CSS 3 (custom palette: void/carbon/panel + volt lime)
+- React Three Fiber + drei (OrbitControls, GLTF + Draco)
+- Blender 5.2 (asset authoring via blender-mcp, GLB export)
+- Space Grotesk + JetBrains Mono
 
-## Expanding the Oxlint configuration
+## Getting Started
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Open http://localhost:5173
+
+```bash
+npm run build   # production build to dist/
+```
+
+## Project Structure
+
+```
+src/
+  components/   # Nav, Hero, HeroCanvas (R3F), Platform, Metrics, Access, Footer
+  hooks/        # useReveal (IntersectionObserver scroll reveals)
+public/
+  techcore.glb  # Draco-compressed hero asset
+  draco/        # Draco decoder for GLTFLoader
+techcore-hero.blend  # Blender source scene
+design-system/techcore/  # persisted design system (MASTER.md)
+```
+
+**Author:** Raliq Hidayat BM3
