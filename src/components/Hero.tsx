@@ -1,16 +1,18 @@
-﻿export function Hero() {
+﻿import type { ReactNode } from "react";
+
+export function Hero({ children }: { children: ReactNode }) {
   return (
-    <section
-      id="top"
-      className="flex min-h-screen items-center"
-      data-chapter
-    >
+    <section id="top" className="relative flex min-h-screen items-center overflow-hidden">
       <div className="grid-bg absolute inset-0" aria-hidden="true" />
-      <div className="relative mx-auto w-full max-w-7xl px-6 pt-28 pb-24 md:pt-16">
+      {/* 3D canvas — right half on desktop, full behind on mobile */}
+      <div className="absolute inset-0 md:left-auto md:w-[55%]">
+        <div className="h-full w-full cursor-grab active:cursor-grabbing">{children}</div>
+      </div>
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-28 pb-24 md:pt-16">
         <div className="max-w-xl">
           <p className="mb-5 inline-flex items-center gap-2 border border-edge bg-panel/80 px-3 py-1.5 font-mono text-[11px] tracking-widest text-smoke backdrop-blur-sm">
             <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-volt" />
-            GRID STATUS: OPERATIONAL â€” 14 REGIONS
+            GRID STATUS: OPERATIONAL — 14 REGIONS
           </p>
           <h1 className="text-5xl font-bold leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
             COMPUTE
@@ -28,7 +30,7 @@
               href="#access"
               className="bg-volt px-7 py-3.5 font-mono text-sm font-semibold tracking-wider text-void transition-transform duration-300 ease-snap hover:translate-y-[-2px]"
             >
-              DEPLOY NOW â†’
+              DEPLOY NOW →
             </a>
             <a
               href="#platform"
@@ -53,8 +55,8 @@
           </dl>
         </div>
       </div>
-      <p className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-widest text-smoke">
-        â†“ SCROLL â€” THE GRID MOVES WITH YOU
+      <p className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 font-mono text-[10px] tracking-widest text-smoke">
+        ↓ SCROLL
       </p>
     </section>
   );
