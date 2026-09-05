@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-void text-bone font-display antialiased;
+}
+
+::selection {
+  @apply bg-volt text-void;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgb(26 34 48 / 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(26 34 48 / 0.4) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%);
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px rgb(184 255 46 / 0.35);
+  color: transparent;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker 28s linear infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2.2s ease-in-out infinite;
+}
