@@ -119,6 +119,49 @@ body {
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 75%);
 }
 
+/* ---- Scrollytelling editorial reveals ---- */
+
+.clip-head {
+  /* heading clip reveal wrapper handled by GSAP; base state visible for no-JS */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .side-reveal-left,
+  .side-reveal-right {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .side-reveal-left { transform: translateX(-56px); }
+  .side-reveal-right { transform: translateX(56px); }
+  .clip-head-line {
+    display: block;
+    overflow: hidden;
+  }
+}
+
+/* background breathing: slow grid drift on body backdrop */
+.bg-drift {
+  position: fixed;
+  inset: -50%;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgb(184 255 46 / 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(184 255 46 / 0.028) 1px, transparent 1px);
+  background-size: 96px 96px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bg-drift {
+    animation: bgdrift 90s linear infinite;
+  }
+}
+
+@keyframes bgdrift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(96px, 96px, 0); }
+}
+
 .text-outline {
   -webkit-text-stroke: 1px rgb(184 255 46 / 0.35);
   color: transparent;

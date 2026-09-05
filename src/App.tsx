@@ -25,11 +25,11 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-void">
-      {/* fixed 3D backdrop — camera moves are driven by scroll */}
+      <div className="bg-drift" aria-hidden="true" />
+
+      {/* fixed 3D backdrop — camera + props driven by scroll */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className={reducedMotion ? "h-full w-full" : "h-full w-full"}>
-          <HeroCanvas reducedMotion={reducedMotion} />
-        </div>
+        <HeroCanvas />
       </div>
 
       <Nav />
